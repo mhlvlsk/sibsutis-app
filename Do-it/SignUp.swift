@@ -15,49 +15,49 @@ struct SignUp: View {
                         .scaledToFit()
                         .frame(width: 83, height: 83)
                     
-                    VStack(alignment: .leading, spacing: 5) {
+                    VStack(alignment: .center, spacing: 5) {
                         HStack {
-                            Text("Welcome to")
-                                .font(.custom("Poppins", size: 25))
+                            Text("Добро пожаловать в")
+                                .font(.custom("Flame", size: 20))
                                 .foregroundColor(.white)
                             
-                            Text("DO IT")
-                                .font(.custom("DarumadropOne-Regular", size: 25))
+                            Text("SIBSUTIS APP")
+                                .font(.custom("DarumadropOne-Regular", size: 20))
                                 .foregroundColor(.white)
-                                .baselineOffset(5)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        Text("Create an account and Join us now!")
-                            .font(.custom("Poppins", size: 18))
+                        Text("Создайте аккаунт и начните пользоваться прямо сейчас!")
+                            .font(.custom("Flame", size: 18))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 35)
                         
                         VStack(alignment: .leading, spacing: 35) {
-                            TextField("Full name", text: $viewModel.fullname)
+                            TextField("", text: $viewModel.fullname, prompt: Text("Имя и Фамилия").foregroundColor(.gray))
                                 .padding()
                                 .background(.white)
                                 .foregroundColor(.gray)
-                                .font(.custom("Poppins", size: 18))
-                                .frame(width: 358, height: 42)
+                                .font(.custom("Flame", size: 18))
+                                .frame(width: 360, height: 40)
                                 .cornerRadius(5)
                             
-                            TextField("E-mail", text: $viewModel.email)
+                            TextField("", text: $viewModel.email, prompt: Text("E-mail").foregroundColor(.gray))
                                 .autocapitalization(.none)
                                 .padding()
                                 .background(.white)
                                 .foregroundColor(.gray)
-                                .font(.custom("Poppins", size: 18))
-                                .frame(width: 358, height: 42)
+                                .font(.custom("Flame", size: 18))
+                                .frame(width: 360, height: 40)
                                 .cornerRadius(5)
                             
-                            SecureField("Password", text: $viewModel.password)
+                            SecureField("", text: $viewModel.password, prompt: Text("Пароль").foregroundColor(.gray))
                                 .autocapitalization(.none)
                                 .padding()
                                 .background(.white)
                                 .foregroundColor(.gray)
-                                .font(.custom("Poppins", size: 18))
-                                .frame(width: 358, height: 42)
+                                .font(.custom("Flame", size: 18))
+                                .frame(width: 360, height: 40)
                                 .cornerRadius(5)
                         }
                         .padding(.bottom, 35)
@@ -69,22 +69,22 @@ struct SignUp: View {
                                     navigateToHomePage = true
                                 }
                             }) {
-                                Text("sign up")
-                                    .font(.custom("Poppins", size: 18))
+                                Text("Зарегистрироваться")
+                                    .font(.custom("Flame", size: 18))
                                     .foregroundColor(.white)
-                                    .frame(width: 348, height: 42)
+                                    .frame(width: 360, height: 40)
                                     .background(Color(UIColor(red: 0.055, green: 0.647, blue: 0.914, alpha: 1)))
                                     .cornerRadius(5)
                             }
                             
                             HStack {
-                                Text("Already have an account?")
-                                    .font(.custom("Poppins", size: 14))
+                                Text("Уже есть аккаунт?")
+                                    .font(.custom("Flame", size: 14))
                                     .foregroundColor(.white)
                                 
                                 NavigationLink(destination: SignIn()) {
-                                    Text("sign in")
-                                        .font(.custom("Poppins", size: 14))
+                                    Text("Войти")
+                                        .font(.custom("Flame", size: 14))
                                         .foregroundColor(Color(UIColor(red: 0.055, green: 0.777, blue: 0.914, alpha: 1)))
                                 }
                             }

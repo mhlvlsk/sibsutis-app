@@ -16,12 +16,6 @@ struct ServiceScreen: View {
                     
                     Service2()
                         .tag(1)
-                    
-                    Service3()
-                        .tag(2)
-                    
-                    Service4()
-                        .tag(3)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 
@@ -32,15 +26,15 @@ struct ServiceScreen: View {
                 Spacer()
                 HStack {
                     
-                    CustomPagingIndicator(currentPage: $currentPage, totalPages: 4, activeTint: .white, inactiveTint: .white)
+                    CustomPagingIndicator(currentPage: $currentPage, totalPages: 2, activeTint: .white, inactiveTint: .white)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.bottom, 40)
                         .padding(.leading, 120)
                     
                     Spacer()
-                    if currentPage < 3 {
+                    if currentPage < 1 {
                         Button(action: {
-                            if currentPage < 3 {
+                            if currentPage < 1 {
                                 currentPage += 1
                             }
                         }) {

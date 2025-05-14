@@ -36,12 +36,13 @@ struct AddTaskView: View {
                                 .foregroundColor(.white)
                             ZStack {
                                 if title.isEmpty {
-                                    Text("task")
+                                    Text("Задача")
                                         .foregroundColor(.white)
-                                        .font(.custom("Poppins", size: 12))
-                                        .padding(.trailing, 260)
+                                        .font(.custom("Flame", size: 12))
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                                 TextField("", text: $title)
+                                    .font(.custom("Flame", size: 12))
                                     .foregroundColor(.white)
                             }
                         }
@@ -57,16 +58,19 @@ struct AddTaskView: View {
                             
                             ZStack(alignment: .topLeading) {
                                 if info.isEmpty {
-                                    Text("Description")
+                                    Text("Описание")
+                                        .opacity(info.isEmpty ? 1 : 0)
                                         .foregroundColor(.white)
-                                        .font(.custom("Poppins", size: 12))
+                                        .font(.custom("Flame", size: 12))
                                         .padding(.top, 10)
+                                        .padding(.leading, 5)
                                 }
-                                TextField("", text: $info)
+                                TextEditor(text: $info)
                                     .foregroundColor(.white)
-                                    .font(.custom("Poppins", size: 12))
+                                    .font(.custom("Flame", size: 12))
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .padding(.bottom, 120)
+                                    .background(.clear)
+                                    .scrollContentBackground(.hidden)
                             }
                         }
                         .padding(.horizontal)
@@ -84,6 +88,7 @@ struct AddTaskView: View {
                             .labelsHidden()
                             .background(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 0.6)))
                             .cornerRadius(5)
+                            .environment(\.locale, Locale(identifier: "ru_RU"))
                             
                             DatePicker(
                                 "",
@@ -94,7 +99,7 @@ struct AddTaskView: View {
                             .labelsHidden()
                             .background(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 0.6)))
                             .cornerRadius(5)
-                            
+                            .environment(\.locale, Locale(identifier: "ru_RU"))
                         }
                         
                         Spacer()
@@ -104,8 +109,8 @@ struct AddTaskView: View {
                             Button(action: {
                                 dismiss()
                             }) {
-                                Text("cancel")
-                                    .font(.custom("Poppins", size: 16))
+                                Text("Отмена")
+                                    .font(.custom("Flame", size: 16))
                                     .foregroundColor(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 1)))
                                     .padding()
                                     .frame(width: 165, height: 46)
@@ -136,8 +141,8 @@ struct AddTaskView: View {
                                     dismiss()
                                 }
                             }) {
-                                Text(taskToEdit != nil ? "update" : "create")
-                                    .font(.custom("Poppins", size: 16))
+                                Text(taskToEdit != nil ? "Применить" : "Создать")
+                                    .font(.custom("Flame", size: 16))
                                     .foregroundColor(.white)
                                     .padding()
                                     .frame(width: 165, height: 46)
@@ -151,9 +156,9 @@ struct AddTaskView: View {
                     .padding()
                     .alert(isPresented: $showAlert) {
                         Alert(
-                            title: Text("Error"),
-                            message: Text("Cant create task"),
-                            dismissButton: .default(Text("Ok"))
+                            title: Text("Ошибка"),
+                            message: Text("Не удалось создать задачу"),
+                            dismissButton: .default(Text("ОК"))
                         )
                     }
                 }

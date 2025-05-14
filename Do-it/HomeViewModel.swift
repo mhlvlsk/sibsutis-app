@@ -2,7 +2,7 @@ import Foundation
 
 class HomeViewModel: ObservableObject {
     @Published var tasks: [Task] = []
-    @Published var userName: String = "Unknown User"
+    @Published var userName: String = "Неизвестный пользователь"
     @Published var userEmail: String = "user@example.com"
     
     private var currentUser: String? {

@@ -19,7 +19,7 @@ struct TasksDetailsPage: View {
                         
                         HStack {
                             Text(task.title)
-                                .font(.custom("Poppins", size: 18))
+                                .font(.custom("Flame", size: 18))
                                 .foregroundColor(.white)
                                 .frame(alignment: .leading)
                             
@@ -32,7 +32,7 @@ struct TasksDetailsPage: View {
                         }
                         
                         Text(task.date)
-                            .font(.custom("Poppins", size: 14))
+                            .font(.custom("Flame", size: 14))
                             .foregroundColor(.white.opacity(0.7))
                             .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -43,7 +43,7 @@ struct TasksDetailsPage: View {
                             .padding(.bottom, 20)
                         
                         Text(task.info)
-                            .font(.custom("Poppins", size: 14))
+                            .font(.custom("Flame", size: 14))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -57,9 +57,9 @@ struct TasksDetailsPage: View {
                             dismiss()
                         }) {
                             ZStack {
-                                Text(task.isCompleted ? "Undone" : "Done")
+                                Text(task.isCompleted ? "Не готово" : "Готово")
                                     .offset(y: 18)
-                                    .font(.custom("Poppins", size: 16))
+                                    .font(.custom("Flame", size: 16))
                                     .frame(width: 88, height: 71)
                                     .background(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 1)))
                                     .foregroundColor(.white)
@@ -78,14 +78,13 @@ struct TasksDetailsPage: View {
                         }) {
                             ZStack {
                                 
-                                Text("Delete")
+                                Text("Удалить")
                                     .offset(y: 18)
-                                    .font(.custom("Poppins", size: 16))
+                                    .font(.custom("Flame", size: 16))
                                     .frame(width: 88, height: 71)
                                     .background(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 1)))
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
-                                
                                 
                                 Image(systemName: "trash.fill")
                                     .frame(width: 20, height: 22)

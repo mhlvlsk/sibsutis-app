@@ -37,9 +37,9 @@ struct TasksPage: View {
                     HStack {
                         ZStack(alignment: .leading) {
                             if searchText.isEmpty {
-                                Text("Search by task title")
+                                Text("Поиск задачи по названию")
                                     .foregroundColor(Color.white)
-                                    .font(.custom("Poppins", size: 12))
+                                    .font(.custom("Flame", size: 12))
                                     .padding(.leading, 15)
                             }
                             
@@ -52,7 +52,7 @@ struct TasksPage: View {
                                 .padding()
                                 .background(Color(UIColor(red: 0.064, green: 0.175, blue: 0.325, alpha: 0.8)))
                                 .foregroundColor(.white)
-                                .font(.custom("Poppins", size: 12))
+                                .font(.custom("Flame", size: 12))
                                 .frame(width: 375, height: 42)
                                 .cornerRadius(5)
                         }
@@ -60,9 +60,9 @@ struct TasksPage: View {
                     .padding()
                     
                     VStack {
-                        Text("Tasks List")
+                        Text("Список задач")
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.custom("Poppins", size: 16))
+                            .font(.custom("Flame", size: 16))
                             .foregroundColor(.white)
                             .padding(.horizontal)
                             .padding(.top, 20)
@@ -140,10 +140,10 @@ struct TaskRow: View {
         HStack {
             VStack(alignment: .leading, spacing: 3) {
                 Text(task.title)
-                    .font(.custom("Poppins", size: 14))
+                    .font(.custom("Flame", size: 14))
                     .foregroundColor(.black)
                 Text(task.date)
-                    .font(.custom("Poppins", size: 10))
+                    .font(.custom("Flame", size: 10))
                     .foregroundColor(.black)
             }
             Spacer()

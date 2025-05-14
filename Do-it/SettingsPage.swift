@@ -19,8 +19,8 @@ struct SettingsPage: View {
                                 .foregroundColor(.white)
                                 .frame(width: 25, height: 25)
                             
-                            Text("Profile")
-                                .font(.custom("Poppins", size: 18))
+                            Text("Профиль")
+                                .font(.custom("Flame", size: 18))
                                 .foregroundColor(.white)
                             
                             Spacer()
@@ -47,8 +47,8 @@ struct SettingsPage: View {
                                 .foregroundColor(.white)
                                 .frame(width: 25, height: 25)
                             
-                            Text("Conversations")
-                                .font(.custom("Poppins", size: 18))
+                            Text("Диалоги")
+                                .font(.custom("Flame", size: 18))
                                 .foregroundColor(.white)
                             
                             Spacer()
@@ -75,8 +75,8 @@ struct SettingsPage: View {
                                 .foregroundColor(.white)
                                 .frame(width: 25, height: 25)
                             
-                            Text("Projects")
-                                .font(.custom("Poppins", size: 18))
+                            Text("Проекты")
+                                .font(.custom("Flame", size: 18))
                                 .foregroundColor(.white)
                             
                             Spacer()
@@ -103,8 +103,8 @@ struct SettingsPage: View {
                                 .foregroundColor(.white)
                                 .frame(width: 25, height: 25)
                             
-                            Text("Terms and Policies")
-                                .font(.custom("Poppins", size: 18))
+                            Text("Пользовательское соглашение")
+                                .font(.custom("Flame", size: 18))
                                 .foregroundColor(.white)
                             
                             Spacer()
@@ -129,8 +129,8 @@ struct SettingsPage: View {
                             Image(systemName: "door.right.hand.open")
                                 .font(.system(size: 18))
                                 .foregroundColor(Color(UIColor(red: 0.863, green: 0.262, blue: 0.262, alpha: 1)))
-                            Text("Logout")
-                                .font(.custom("Poppins", size: 18))
+                            Text("Выйти")
+                                .font(.custom("Flame", size: 18))
                                 .foregroundColor(Color(UIColor(red: 0.863, green: 0.262, blue: 0.262, alpha: 1)))
                         }
                         .frame(width: 226, height: 42)
@@ -140,9 +140,9 @@ struct SettingsPage: View {
                     }
                     .alert(isPresented: $logOutAlert) {
                         Alert(
-                            title: Text("Logout"),
-                            message: Text("Are you sure you want to log out?"),
-                            primaryButton: .destructive(Text("Yes")) {
+                            title: Text("Выйти"),
+                            message: Text("Вы действительно хотите выйти?"),
+                            primaryButton: .destructive(Text("Да")) {
                                 logout()
                             },
                             secondaryButton: .cancel()
@@ -158,7 +158,7 @@ struct SettingsPage: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Settings")
+                    Text("Настройки")
                         .font(.custom("Inter-SemiBold", size: 18))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)

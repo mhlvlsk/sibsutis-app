@@ -23,8 +23,6 @@
 		12380F3A2D12CA17002AFE27 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12380F392D12CA17002AFE27 /* Poppins-Medium.ttf */; };
 		12380F3D2D12CC90002AFE27 /* Service1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12380F3C2D12CC90002AFE27 /* Service1.swift */; };
 		12380F3F2D12D2DA002AFE27 /* Service2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12380F3E2D12D2DA002AFE27 /* Service2.swift */; };
-		12380F412D12D3EC002AFE27 /* Service3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12380F402D12D3EC002AFE27 /* Service3.swift */; };
-		12380F432D12D4AA002AFE27 /* Service4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12380F422D12D4A9002AFE27 /* Service4.swift */; };
 		123C48EC2D1A70A8005F4818 /* ServiceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123C48EB2D1A70A8005F4818 /* ServiceScreen.swift */; };
 		123C48EE2D1A75FC005F4818 /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123C48ED2D1A75FC005F4818 /* SignIn.swift */; };
 		123C48F02D1AA085005F4818 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123C48EF2D1AA085005F4818 /* SignUp.swift */; };
@@ -36,6 +34,7 @@
 		123C48FC2D1AD45C005F4818 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123C48FB2D1AD45C005F4818 /* TabBarView.swift */; };
 		12E9F2342D1FB53400A3E0F5 /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9F2332D1FB53300A3E0F5 /* ValidationService.swift */; };
 		12E9F2362D1FBF0100A3E0F5 /* CustomPagingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E9F2352D1FBF0100A3E0F5 /* CustomPagingIndicator.swift */; };
+		12E9F8E52DD0C000008C6CE3 /* Flame-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12E9F8E42DD0C000008C6CE3 /* Flame-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,8 +55,6 @@
 		12380F392D12CA17002AFE27 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		12380F3C2D12CC90002AFE27 /* Service1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service1.swift; sourceTree = "<group>"; };
 		12380F3E2D12D2DA002AFE27 /* Service2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service2.swift; sourceTree = "<group>"; };
-		12380F402D12D3EC002AFE27 /* Service3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service3.swift; sourceTree = "<group>"; };
-		12380F422D12D4A9002AFE27 /* Service4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service4.swift; sourceTree = "<group>"; };
 		123C48EB2D1A70A8005F4818 /* ServiceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceScreen.swift; sourceTree = "<group>"; };
 		123C48ED2D1A75FC005F4818 /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
 		123C48EF2D1AA085005F4818 /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
@@ -69,6 +66,7 @@
 		123C48FB2D1AD45C005F4818 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		12E9F2332D1FB53300A3E0F5 /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
 		12E9F2352D1FBF0100A3E0F5 /* CustomPagingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPagingIndicator.swift; sourceTree = "<group>"; };
+		12E9F8E42DD0C000008C6CE3 /* Flame-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Flame-Regular.otf"; path = "../../../../../Downloads/Burger King Flame/Flame-Regular.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,8 +105,6 @@
 				123C48EB2D1A70A8005F4818 /* ServiceScreen.swift */,
 				12380F3C2D12CC90002AFE27 /* Service1.swift */,
 				12380F3E2D12D2DA002AFE27 /* Service2.swift */,
-				12380F402D12D3EC002AFE27 /* Service3.swift */,
-				12380F422D12D4A9002AFE27 /* Service4.swift */,
 				122CA57D2D1BF228001B2281 /* Model.swift */,
 				122CA57F2D1BF24B001B2281 /* SignInViewModel.swift */,
 				122CA5812D1BF8B1001B2281 /* SignUpViewModel.swift */,
@@ -146,6 +142,7 @@
 				12380F332D12C33D002AFE27 /* DarumadropOne-Regular.ttf */,
 				122CA57B2D1BEB21001B2281 /* Inter-SemiBold.ttf */,
 				12380F392D12CA17002AFE27 /* Poppins-Medium.ttf */,
+				12E9F8E42DD0C000008C6CE3 /* Flame-Regular.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -216,6 +213,7 @@
 				12380F3A2D12CA17002AFE27 /* Poppins-Medium.ttf in Resources */,
 				12380F292D12B1EA002AFE27 /* Preview Assets.xcassets in Resources */,
 				122CA57C2D1BEB21001B2281 /* Inter-SemiBold.ttf in Resources */,
+				12E9F8E52DD0C000008C6CE3 /* Flame-Regular.otf in Resources */,
 				12380F262D12B1EA002AFE27 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,13 +232,11 @@
 				123C48EE2D1A75FC005F4818 /* SignIn.swift in Sources */,
 				122CA57E2D1BF228001B2281 /* Model.swift in Sources */,
 				123C48FC2D1AD45C005F4818 /* TabBarView.swift in Sources */,
-				12380F412D12D3EC002AFE27 /* Service3.swift in Sources */,
 				12380F302D12B44B002AFE27 /* GradientBackgroundView.swift in Sources */,
 				123C48F82D1AB0DC005F4818 /* SettingsPage.swift in Sources */,
 				122CA5842D1C1737001B2281 /* TasksViewModel.swift in Sources */,
 				123C48F62D1AAF61005F4818 /* TasksDetailsPage.swift in Sources */,
 				123C48F42D1AAEF2005F4818 /* TasksPage.swift in Sources */,
-				12380F432D12D4AA002AFE27 /* Service4.swift in Sources */,
 				122CA5822D1BF8B1001B2281 /* SignUpViewModel.swift in Sources */,
 				12E9F2342D1FB53400A3E0F5 /* ValidationService.swift in Sources */,
 				12E9F2362D1FBF0100A3E0F5 /* CustomPagingIndicator.swift in Sources */,
@@ -384,6 +380,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Do-it/Preview Content\"";
+				DEVELOPMENT_TEAM = L234YGW9SJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Do-it/Info.plist";
@@ -413,6 +410,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Do-it/Preview Content\"";
+				DEVELOPMENT_TEAM = L234YGW9SJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Do-it/Info.plist";

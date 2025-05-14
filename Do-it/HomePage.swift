@@ -11,11 +11,11 @@ struct HomePage: View {
             VStack {
                 VStack(alignment: .leading, spacing: 3) {
                     Text("\(viewModel.userName)")
-                        .font(.custom("Poppins", size: 18))
+                        .font(.custom("Flame", size: 18))
                         .foregroundColor(.white)
                     
                     Text(viewModel.userEmail)
-                        .font(.custom("Poppins", size: 14))
+                        .font(.custom("Flame", size: 14))
                         .foregroundColor(.white.opacity(0.7))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -26,8 +26,8 @@ struct HomePage: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         if !viewModel.getUncompletedTasks().isEmpty {
-                            Text("Incompleted Tasks")
-                                .font(.custom("Poppins", size: 14))
+                            Text("Невыполненные задачи")
+                                .font(.custom("Flame", size: 14))
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 20)
                             
@@ -38,8 +38,8 @@ struct HomePage: View {
                         }
                         
                         if !viewModel.getCompletedTasks().isEmpty {
-                            Text("Completed Tasks")
-                                .font(.custom("Poppins", size: 14))
+                            Text("Выполненные задачи")
+                                .font(.custom("Flame", size: 14))
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 20)
                             

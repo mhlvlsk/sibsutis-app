@@ -10,19 +10,19 @@ class SignUpViewModel: ObservableObject {
 
     func signUp() {
         guard ValidationService.isValidName(fullname) else {
-            alertMessage = "Name can only contain letters and spaces."
+            alertMessage = "Имя может содержать только буквы."
             showAlert = true
             return
         }
         
         guard ValidationService.isValidEmail(email) else {
-            alertMessage = "Invalid email address."
+            alertMessage = "Неверный адрес электронной почты."
             showAlert = true
             return
         }
         
         guard ValidationService.isValidPassword(password) else {
-            alertMessage = "Password must be at least 6 characters."
+            alertMessage = "Пароль должен содержать минимум 6 символов."
             showAlert = true
             return
         }
@@ -34,7 +34,7 @@ class SignUpViewModel: ObservableObject {
         }
         
         if users.contains(where: { $0.email == email }) {
-            alertMessage = "User with this email already exists."
+            alertMessage = "Пользователь с таким email уже существует."
             showAlert = true
             return
         }

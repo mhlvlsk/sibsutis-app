@@ -13,13 +13,13 @@ class SignInViewModel: ObservableObject {
     
     func signIn() {
         guard ValidationService.isValidEmail(email) else {
-            alertMessage = "Invalid email address."
+            alertMessage = "Неверный адрес электронной почты."
             showAlert = true
             return
         }
         
         guard ValidationService.isValidPassword(password) else {
-            alertMessage = "Password must be at least 6 characters."
+            alertMessage = "Пароль должен содержать минимум 6 символов."
             showAlert = true
             return
         }
@@ -35,11 +35,11 @@ class SignInViewModel: ObservableObject {
 
                 isAuthenticated = true
             } else {
-                alertMessage = "Can't sign in. Invalid email or password."
+                alertMessage = "Неверный email или пароль."
                 showAlert = true
             }
         } else {
-            alertMessage = "No users found. Please sign up first."
+            alertMessage = "Пользователь не найден."
             showAlert = true
         }
     }

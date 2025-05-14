@@ -10,26 +10,27 @@ struct CalendarPage: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 20) {
-                Text("Calendar")
+                Text("Календарь")
                     .font(.custom("Inter-SemiBold", size: 18))
                     .foregroundColor(.white)
                 
                 DatePicker(
-                    "Select Date",
+                    "Выберите дату",
                     selection: $selectedDate,
                     displayedComponents: [.date]
                 )
                 .datePickerStyle(GraphicalDatePickerStyle())
-                .background(Color.white)
+                .background(Color.white.opacity(0.2))
                 .cornerRadius(10)
                 .frame(width: 380, height: 285)
                 .padding(.top, 30)
                 .padding()
+                .environment(\.locale, Locale(identifier: "ru_RU"))
                 
                 ScrollView {
                     if tasksForSelectedDate.isEmpty {
-                        Text("No tasks for this date.")
-                            .font(.custom("Poppins", size: 16))
+                        Text("Нет задач на эту дату.")
+                            .font(.custom("Flame", size: 16))
                             .foregroundColor(.white)
                             .padding()
                     } else {

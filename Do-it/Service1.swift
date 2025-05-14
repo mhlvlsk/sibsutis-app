@@ -12,7 +12,7 @@ struct Service1: View {
                     .frame(width: 411, height: 297)
                 
                 Text("Планируйте выполнение ваших заданий, чтобы не забыть их сделать")
-                    .font(.custom("Poppins", size: 20))
+                    .font(.custom("Flame-Regular", size: 20))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(60)
