@@ -8,13 +8,15 @@ struct User: Codable, Equatable {
 
 struct Task: Identifiable, Codable, Hashable {
     let id: UUID
+    var subject: String
     var title: String
     var date: String
     var info: String
     var isCompleted: Bool
     
-    init(title: String, date: String, info: String, isCompleted: Bool = false) {
+    init(subject: String, title: String, date: String, info: String, isCompleted: Bool = false) {
         self.id = UUID()
+        self.subject = subject
         self.title = title
         self.date = date
         self.info = info

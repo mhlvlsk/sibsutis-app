@@ -4,6 +4,7 @@ struct AddTaskView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel: TasksViewModel
     
+    @State private var subject: String
     @State private var title: String
     @State private var info: String
     @State private var date: Date
@@ -14,6 +15,7 @@ struct AddTaskView: View {
     
     init(viewModel: TasksViewModel, task: Task? = nil) {
         self.taskToEdit = task
+        _subject = State(initialValue: task?.subject ?? "")
         _title = State(initialValue: task?.title ?? "")
         _info = State(initialValue: task?.info ?? "")
         _date = State(initialValue: task?.parseDate(task?.date ?? "") ?? Date())
@@ -31,6 +33,26 @@ struct AddTaskView: View {
                     }
                 ScrollView {
                     VStack(spacing: 20) {
+                        HStack {
+                            Image(systemName: "checkmark.square")
+                                .foregroundColor(.white)
+                            ZStack {
+                                if subject.isEmpty {
+                                    Text("Предмет")
+                                        .foregroundColor(.white)
+                                        .font(.custom("Flame", size: 12))
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                TextField("", text: $subject)
+                                    .font(.custom("Flame", size: 12))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        .padding()
+                        .background(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 1)))
+                        .frame(width: 358, height: 42)
+                        .cornerRadius(5)
+                        
                         HStack {
                             Image(systemName: "checkmark.square")
                                 .foregroundColor(.white)
@@ -126,6 +148,7 @@ struct AddTaskView: View {
                                 } else {
                                     if let task = taskToEdit {
                                         viewModel.updateTask(
+                                            subject: subject,
                                             task: task,
                                             title: title,
                                             date: formatDate(date: date),
@@ -133,6 +156,7 @@ struct AddTaskView: View {
                                         )
                                     } else {
                                         viewModel.addTask(
+                                            subject: subject,
                                             title: title,
                                             date: formatDate(date: date),
                                             info: info

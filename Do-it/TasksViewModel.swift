@@ -12,8 +12,8 @@ class TasksViewModel: ObservableObject {
         loadTasks()
     }
     
-    func addTask(title: String, date: String, info: String = "") {
-        let newTask = Task(title: title, date: date, info: info)
+    func addTask(subject: String, title: String, date: String, info: String = "") {
+        let newTask = Task(subject: subject, title: title, date: date, info: info)
         tasks.append(newTask)
         saveTasks()
         notifyTasksChanged()
@@ -25,8 +25,9 @@ class TasksViewModel: ObservableObject {
         notifyTasksChanged()
     }
     
-    func updateTask(task: Task, title: String, date: String, info: String) {
+    func updateTask(subject: String, task: Task, title: String, date: String, info: String) {
         if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks[index].subject = subject
             tasks[index].title = title
             tasks[index].date = date
             tasks[index].info = info

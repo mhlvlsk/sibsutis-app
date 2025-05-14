@@ -31,6 +31,13 @@ struct TasksDetailsPage: View {
                             }
                         }
                         
+                        HStack {
+                            Text(task.subject)
+                                .font(.custom("Flame", size: 14))
+                                .foregroundColor(.white.opacity(0.7))
+                                .frame(alignment: .leading)
+                        }
+                        
                         Text(task.date)
                             .font(.custom("Flame", size: 14))
                             .foregroundColor(.white.opacity(0.7))
