@@ -32,7 +32,7 @@ struct StartScreen: View {
                     }
                     .ignoresSafeArea()
                     .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             withAnimation {
                                 isLoaded = true
                             }
@@ -40,18 +40,10 @@ struct StartScreen: View {
                     }
                 }
             }
-            .navigationDestination(isPresented: $navigateToHomePage) {
-                TabBarView()
-            }
         }
-        .onAppear {
-            if viewModel.isAuthenticated {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    withAnimation {
-                        navigateToHomePage = true
-                    }
-                }
-            }
-        }
+    }
+    
+    init() {
+        viewModel.autoSignIn()
     }
 }

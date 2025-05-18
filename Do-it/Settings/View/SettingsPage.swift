@@ -1,8 +1,9 @@
 import SwiftUI
+import SwiftSDK
 
 struct SettingsPage: View {
-    
     @State private var logOutAlert: Bool = false
+    @State private var isLoggingOut: Bool = false
     
     var body: some View {
         NavigationView {
@@ -143,7 +144,19 @@ struct SettingsPage: View {
                             title: Text("Выйти"),
                             message: Text("Вы действительно хотите выйти?"),
                             primaryButton: .destructive(Text("Да")) {
-                                logout()
+                                isLoggingOut = true
+                                logout { success in
+                                    if success {
+                                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                           let window = scene.windows.first {
+                                            window.rootViewController = UIHostingController(rootView: SignIn())
+                                            window.makeKeyAndVisible()
+                                        }
+                                    } else {
+                                        isLoggingOut = false
+                                        logOutAlert = true
+                                    }
+                                }
                             },
                             secondaryButton: .cancel()
                         )
@@ -164,26 +177,21 @@ struct SettingsPage: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+            .disabled(isLoggingOut)
         }
     }
     
-    
-    private func logout() {
-        
+    private func logout(completion: @escaping (Bool) -> Void) {
         UserDefaults.standard.removeObject(forKey: "currentUser")
         UserDefaults.standard.removeObject(forKey: "lastUserEmail")
         UserDefaults.standard.removeObject(forKey: "lastUserPassword")
         
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            if let window = scene.windows.first {
-                window.rootViewController = UIHostingController(rootView: SignIn())
-                window.makeKeyAndVisible()
-            }
-        }
+        Backendless.shared.userService.logout(responseHandler: {
+            print("User logged out successfully")
+            completion(true)
+        }, errorHandler: { fault in
+            print("Logout failed: \(fault.message ?? "")")
+            completion(false)
+        })
     }
 }
-
-
-
-
-

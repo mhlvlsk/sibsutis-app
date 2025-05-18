@@ -65,17 +65,22 @@ struct SignUp: View {
                         VStack(alignment: .center, spacing: 15) {
                             Button(action: {
                                 viewModel.signUp()
-                                if viewModel.isSignedUp {
-                                    navigateToHomePage = true
-                                }
                             }) {
-                                Text("Зарегистрироваться")
-                                    .font(.custom("Flame", size: 18))
-                                    .foregroundColor(.white)
-                                    .frame(width: 360, height: 40)
-                                    .background(Color(UIColor(red: 0.055, green: 0.647, blue: 0.914, alpha: 1)))
-                                    .cornerRadius(5)
+                                if viewModel.isLoading {
+                                    ProgressView()
+                                        .frame(width: 360, height: 40)
+                                        .background(Color(UIColor(red: 0.055, green: 0.647, blue: 0.914, alpha: 1)))
+                                        .cornerRadius(5)
+                                } else {
+                                    Text("Зарегистрироваться")
+                                        .font(.custom("Flame", size: 18))
+                                        .foregroundColor(.white)
+                                        .frame(width: 360, height: 40)
+                                        .background(Color(UIColor(red: 0.055, green: 0.647, blue: 0.914, alpha: 1)))
+                                        .cornerRadius(5)
+                                }
                             }
+                            .disabled(viewModel.isLoading)
                             
                             HStack {
                                 Text("Уже есть аккаунт?")
@@ -99,11 +104,40 @@ struct SignUp: View {
                     TabBarView()
                 }
             }
-            .alert(isPresented: $viewModel.showAlert) {
-                Alert(title: Text("Error"), message: Text(viewModel.alertMessage), dismissButton: .default(Text("Ok")))
+            .onChange(of: viewModel.authState) { newState in
+                switch newState {
+                case .success:
+                    navigateToHomePage = true
+                case .error(let message):
+                    print("Error: \(message)")
+                case .loading, .idle:
+                    break
+                }
             }
             .ignoresSafeArea()
         }
         .navigationBarBackButtonHidden(true)
+    }
+}
+
+private extension SignUpViewModel.AuthState {
+    var isError: Bool {
+        if case .error = self {
+            return true
+        }
+        return false
+    }
+    
+    var errorMessage: String? {
+        if case .error(let message) = self {
+            return message
+        }
+        return nil
+    }
+}
+
+struct SignUp_Previews: PreviewProvider {
+    static var previews: some View {
+        SignUp()
     }
 }

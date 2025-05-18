@@ -52,8 +52,8 @@ struct HomePage: View {
                 }
             }
             .onAppear {
-                viewModel.loadUserData()
-                viewModel.loadTasks()
+                print("HomePage onAppear: tasks count = \(viewModel.tasks.count)")
+                viewModel.refreshTasks()
             }
         }
     }

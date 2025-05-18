@@ -155,7 +155,7 @@ struct AddTaskView: View {
                                             info: info
                                         )
                                     } else {
-                                        viewModel.addTask(
+                                        viewModel.addTaskToServer(
                                             subject: subject,
                                             title: title,
                                             date: formatDate(date: date),
