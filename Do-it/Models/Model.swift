@@ -30,7 +30,8 @@ struct Task: Identifiable, Codable, Hashable {
     
     func parseDate(_ dateString: String) -> Date {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy h:mm a"
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "d MMM yyyy, HH:mm"
         return formatter.date(from: dateString) ?? Date()
     }
 }

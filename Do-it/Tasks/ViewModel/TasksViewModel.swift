@@ -46,6 +46,20 @@ class TasksViewModel: ObservableObject {
         tasks.removeAll { $0.id == task.id }
         saveTasks()
         notifyTasksChanged()
+        
+        guard let objectId = task.objectId else {
+            print("Cannot delete task from server: objectId is nil")
+            return
+        }
+        
+        let backendTask = BackendTask()
+        backendTask.objectId = objectId
+        
+        dataStore.remove(entity: backendTask, responseHandler: { removed in
+            print("Task successfully deleted from Backendless. Object ID: \(objectId)")
+        }, errorHandler: { fault in
+            print("Failed to delete task from Backendless: \(fault.message ?? "Unknown error")")
+        })
     }
     
     func updateTask(subject: String, task: Task, title: String, date: String, info: String) {

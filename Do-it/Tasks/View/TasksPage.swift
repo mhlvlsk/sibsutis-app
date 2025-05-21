@@ -6,7 +6,8 @@ struct TasksPage: View {
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy h:mm a"
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "d MMM yyyy, HH:mm"
         return formatter
     }()
     
@@ -166,7 +167,8 @@ struct TaskRow: View {
 extension TasksPage {
     private func parseDate(_ dateString: String) -> Date? {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy h:mm a"
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "d MMM yyyy, HH:mm"
         return formatter.date(from: dateString)
     }
 }
