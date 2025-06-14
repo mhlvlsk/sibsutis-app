@@ -6,6 +6,17 @@ class TasksViewModel: ObservableObject {
     @Published var showAddTask: Bool = false
     @Published var users: [BackendlessUser] = []
     
+    // Новая структура для отображения в UI
+    struct AssignedUserInfo: Identifiable {
+        let id: String // userId
+        let email: String
+        let fullname: String
+        let status: String
+    }
+    
+    // Новое @Published свойство для хранения назначенных пользователей
+    @Published var assignedUsers: [AssignedUserInfo] = []
+    
     // Централизованное свойство для роли менеджера
     @Published var isManager: Bool = false
     
@@ -278,12 +289,27 @@ class TasksViewModel: ObservableObject {
                 let taskIdsString = taskIds.map { "'\($0)'" }.joined(separator: ",")
                 taskQueryBuilder.whereClause = "objectId IN (\(taskIdsString))"
                 
+                // Шаг C.1: Создать словарь [taskId: (status, userTaskId)] - исправленный вариант
+                let userTaskInfoMap = assignedUserTasks.reduce(into: [String: (status: String?, userTaskId: String?)]()) { dictionary, userTask in
+                    if let taskId = userTask.taskId {
+                        dictionary[taskId] = (userTask.status, userTask.objectId)
+                    }
+                }
+                
                 self.dataStore.find(queryBuilder: taskQueryBuilder) { backendTasks in
                     if let backendTasks = backendTasks as? [BackendTask] {
-                let tasks = backendTasks.map { $0.toTask() }
-                DispatchQueue.main.async {
-                    self.tasks = tasks
-                    self.saveTasks()
+                        let tasks = backendTasks.map { backendTask -> Task in
+                            var task = backendTask.toTask()
+                            // Добавляем персональный статус и ID назначения
+                            if let taskId = task.objectId, let info = userTaskInfoMap[taskId] {
+                                task.userStatus = info.status
+                                task.userTaskId = info.userTaskId
+                            }
+                            return task
+                        }
+                        DispatchQueue.main.async {
+                            self.tasks = tasks
+                            self.saveTasks()
                             print("✅ Assigned tasks loaded from server: \(tasks.count)")
                         }
                     }
@@ -370,6 +396,110 @@ class TasksViewModel: ObservableObject {
             print("✅ Successfully bulk created \(createdIds.count ?? 0) UserTask entries. Task '\(taskId)' assigned to users.")
         } errorHandler: { fault in
             print("❌ Failed to bulk assign task: \(fault.message ?? "unknown error")")
+        }
+    }
+    
+    func fetchAssignedUsers(for task: Task) {
+        guard let taskId = task.objectId else {
+            print("Cannot fetch assigned users: Task ID is nil.")
+            return
+        }
+        
+        let userTasksStore = Backendless.shared.data.of(UserTask.self)
+        let queryBuilder = DataQueryBuilder()
+        queryBuilder.whereClause = "taskId = '\(taskId)'"
+        
+        // 1. Найти все назначения для этой задачи
+        userTasksStore.find(queryBuilder: queryBuilder) { [weak self] userTasks in
+            guard let self = self,
+                  let assignedUserTasks = userTasks as? [UserTask],
+                  !assignedUserTasks.isEmpty else {
+                print("No users assigned to this task.")
+                DispatchQueue.main.async {
+                    self?.assignedUsers = []
+                }
+                return
+            }
+            
+            // 2. Собрать ID всех назначенных пользователей
+            let userIds = assignedUserTasks.compactMap { $0.userId }
+            guard !userIds.isEmpty else { return }
+            
+            // 3. Создать словарь [userId: status] для быстрого доступа (исправленный вариант)
+            let statusMap = assignedUserTasks.reduce(into: [String: String]()) { dictionary, userTask in
+                if let userId = userTask.userId, let status = userTask.status {
+                    dictionary[userId] = status
+                }
+            }
+            
+            // 4. Загрузить полные данные этих пользователей
+            let userQueryBuilder = DataQueryBuilder()
+            let userIdsString = userIds.map { "'\($0)'" }.joined(separator: ",")
+            userQueryBuilder.whereClause = "objectId IN (\(userIdsString))"
+            
+            Backendless.shared.data.of(BackendlessUser.self).find(queryBuilder: userQueryBuilder) { backendlessUsers in
+                guard let users = backendlessUsers as? [BackendlessUser] else { return }
+                
+                // 5. Создать массив AssignedUserInfo
+                let assignedUsersInfo = users.compactMap { user -> AssignedUserInfo? in
+                    guard let userId = user.objectId,
+                          let email = user.email,
+                          let fullname = user.properties["fullname"] as? String,
+                          let status = statusMap[userId] else {
+                        return nil
+                    }
+                    return AssignedUserInfo(id: userId, email: email, fullname: fullname, status: status)
+                }
+                
+                DispatchQueue.main.async {
+                    self.assignedUsers = assignedUsersInfo
+                    print("✅ Successfully fetched assigned users: \(assignedUsersInfo.count)")
+                }
+                
+            } errorHandler: { fault in
+                print("❌ Failed to fetch user details for assigned tasks: \(fault.message ?? "unknown error")")
+            }
+        } errorHandler: { fault in
+            print("❌ Failed to load user's task assignments: \(fault.message ?? "unknown error")")
+        }
+    }
+    
+    func clearAssignedUsers() {
+        self.assignedUsers = []
+    }
+    
+    // Переименовываем и обновляем метод для работы со статусом UserTask
+    func updateTaskStatus(task: Task) {
+        // Эта функция теперь только для обычных пользователей
+        guard !isManager,
+              let userTaskId = task.userTaskId,
+              let taskId = task.objectId,
+              let currentUserId = Backendless.shared.userService.currentUser?.objectId,
+              let currentStatus = task.userStatus else {
+            print("❌ Cannot update status. Not a regular user or task/user info is missing.")
+            return
+        }
+
+        let newStatus = (currentStatus == "выполнено") ? "невыполнено" : "выполнено"
+
+        // Создаем ПОЛНЫЙ объект для обновления, чтобы не затереть другие поля
+        let userTaskToUpdate = UserTask()
+        userTaskToUpdate.objectId = userTaskId
+        userTaskToUpdate.status = newStatus
+        userTaskToUpdate.taskId = taskId // <-- ВАЖНО: сохраняем ID задачи
+        userTaskToUpdate.userId = currentUserId // <-- ВАЖНО: сохраняем ID пользователя
+        userTaskToUpdate.ownerId = currentUserId // <-- ВАЖНО: сохраняем владельца записи
+
+        Backendless.shared.data.of(UserTask.self).save(entity: userTaskToUpdate) { [weak self] updatedUserTask in
+            print("✅ Successfully updated user task status to '\(newStatus)'")
+            // Обновляем локальные данные для мгновенного отклика UI
+            DispatchQueue.main.async {
+                if let index = self?.tasks.firstIndex(where: { $0.id == task.id }) {
+                    self?.tasks[index].userStatus = newStatus
+                }
+            }
+        } errorHandler: { fault in
+            print("❌ Failed to update user task status: \(fault.message ?? "unknown error")")
         }
     }
 }

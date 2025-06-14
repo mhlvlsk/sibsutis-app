@@ -38,7 +38,7 @@ struct AssignTaskView: View {
             .onAppear {
                 viewModel.fetchAllUsers()
             }
-            .navigationTitle("Выберите исполнителей")
+            .navigationTitle("Исполнители:")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

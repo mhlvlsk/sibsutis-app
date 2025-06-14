@@ -20,7 +20,11 @@ struct Task: Identifiable, Codable, Hashable {
     // Меняем сложный объект на простой String, чтобы Codable работал правильно
     var creatorId: String?
     
-    init(subject: String, title: String, date: String, info: String, isCompleted: Bool = false, objectId: String? = nil, ownerId: String? = nil, creatorId: String? = nil) {
+    // Новые поля для отслеживания статуса конкретного пользователя
+    var userStatus: String?
+    var userTaskId: String? // objectId из таблицы UserTask
+    
+    init(subject: String, title: String, date: String, info: String, isCompleted: Bool = false, objectId: String? = nil, ownerId: String? = nil, creatorId: String? = nil, userStatus: String? = nil, userTaskId: String? = nil) {
         self.id = UUID()
         self.objectId = objectId
         self.ownerId = ownerId
@@ -30,6 +34,8 @@ struct Task: Identifiable, Codable, Hashable {
         self.info = info
         self.isCompleted = isCompleted
         self.creatorId = creatorId
+        self.userStatus = userStatus
+        self.userTaskId = userTaskId
     }
     
     func parseDate(_ dateString: String) -> Date {

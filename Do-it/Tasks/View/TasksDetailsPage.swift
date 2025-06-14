@@ -62,8 +62,36 @@ struct TasksDetailsPage: View {
                     }
                     .padding()
                     
-                    Spacer()
-                    
+                    if isManager && !viewModel.assignedUsers.isEmpty {
+                        VStack(alignment: .leading) {
+                            Text("Назначено:")
+                                .font(.custom("Flame", size: 16))
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
+                            
+                            List(viewModel.assignedUsers) { user in
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(user.fullname)
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+                                        Text(user.email)
+                                            .font(.subheadline)
+                                            .foregroundColor(.white.opacity(0.8))
+                                    }
+                                    Spacer()
+                                    Text(translatedStatus(for: user.status))
+                                        .foregroundColor(statusColor(for: user.status))
+                                        .font(.custom("Flame", size: 16))
+                                }
+                                .listRowBackground(Color.white.opacity(0.1))
+                            }
+                            .listStyle(PlainListStyle())
+                            .frame(height: 300) // Ограничиваем высоту, чтобы не занимало весь экран
+                            .cornerRadius(10)
+                        }
+                    }
+                                        
                     HStack(spacing: 20) {
                         if isManager {
                             Button(action: {
@@ -86,23 +114,24 @@ struct TasksDetailsPage: View {
                             }
                         }
                         
-                        Button(action: {
-                            viewModel.toggleTaskCompletion(task: task)
-                            dismiss()
-                        }) {
-                            ZStack {
-                                Text(task.isCompleted ? "Не готово" : "Готово")
-                                    .offset(y: 18)
-                                    .font(.custom("Flame", size: 16))
-                                    .frame(width: 88, height: 71)
-                                    .background(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 1)))
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                
-                                Image(systemName: "checkmark.circle.fill")
-                                    .frame(width: 20, height: 20)
-                                    .foregroundColor(task.isCompleted ? .orange : .green)
-                                    .padding(.bottom, 20)
+                        if !isManager {
+                            Button(action: {
+                                viewModel.updateTaskStatus(task: task)
+                            }) {
+                                ZStack {
+                                    Text(task.userStatus == "выполнено" ? "Не готово" : "Готово")
+                                        .offset(y: 18)
+                                        .font(.custom("Flame", size: 16))
+                                        .frame(width: 120, height: 71)
+                                        .background(Color(UIColor(red: 0.02, green: 0.143, blue: 0.242, alpha: 1)))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                    
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(task.userStatus == "выполнено" ? .orange : .green)
+                                        .padding(.bottom, 20)
+                                }
                             }
                         }
                         
@@ -137,6 +166,36 @@ struct TasksDetailsPage: View {
         }
         .sheet(isPresented: $showAssignTaskView) {
             AssignTaskView(task: task, viewModel: viewModel)
+        }
+        .onAppear {
+            if isManager {
+                viewModel.fetchAssignedUsers(for: task)
+            }
+        }
+        .onDisappear {
+            viewModel.clearAssignedUsers()
+        }
+    }
+    
+    private func statusColor(for status: String) -> Color {
+        switch status.lowercased() {
+        case "new", "невыполнено":
+            return .yellow
+        case "completed", "выполнено":
+            return .green
+        default:
+            return .gray
+        }
+    }
+    
+    private func translatedStatus(for status: String) -> String {
+        switch status.lowercased() {
+        case "new":
+            return "невыполнено"
+        case "completed":
+            return "выполнено"
+        default:
+            return status
         }
     }
 }

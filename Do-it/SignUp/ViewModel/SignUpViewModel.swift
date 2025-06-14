@@ -31,9 +31,25 @@ class SignUpViewModel: ObservableObject {
             return
         }
 
+        // Шаг 1: Принудительный выход, чтобы очистить любой невалидный кэшированный токен
+        Backendless.shared.userService.logout(responseHandler: {
+            // Успешный выход, можно продолжать
+            print("Successfully logged out before registration.")
+            self.performRegistration()
+        }, errorHandler: { fault in
+            // Ошибка при выходе, но мы все равно пытаемся зарегистрироваться,
+            // так как это, вероятно, означает, что сессии и так не было.
+            print("Could not log out before registration (this is likely okay): \(fault.message ?? "N/A")")
+            self.performRegistration()
+        })
+    }
+    
+    private func performRegistration() {
         // Шаг 2: Установка состояния загрузки
-        authState = .loading
-        isLoading = true
+        DispatchQueue.main.async {
+            self.authState = .loading
+            self.isLoading = true
+        }
 
         // Шаг 3: Создание объекта BackendlessUser
         let user = BackendlessUser()
