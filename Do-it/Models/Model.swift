@@ -51,7 +51,7 @@ class BackendTask: NSObject {
     
     // Меняем сложное поле-связь на простое текстовое поле ID
     @objc dynamic var creatorId: String?
-
+    
     override init() {
         self.subject = ""
         self.title = ""

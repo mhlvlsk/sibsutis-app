@@ -70,7 +70,7 @@ class TasksViewModel: ObservableObject {
         let backendTask = BackendTask(subject: subject, title: title, date: date, info: info, creatorId: currentUser.objectId)
         
         logTaskBeforeSave(backendTask, axtion: "CREATING")
-
+        
         dataStore.save(entity: backendTask, responseHandler: { savedTask in
             if let savedTask = savedTask as? BackendTask, let objectId = savedTask.objectId {
                 print("✅ Task successfully saved to Backendless: \(savedTask)")
@@ -231,7 +231,7 @@ class TasksViewModel: ObservableObject {
         if isManager {
             // 2. Логика для Менеджера: загружаем все созданные им задачи
             print("User is a Manager. Loading created tasks.")
-            let queryBuilder = DataQueryBuilder()
+        let queryBuilder = DataQueryBuilder()
             // Используем ownerId - это надежнее, чем наше кастомное поле creatorId
             queryBuilder.whereClause = "ownerId = '\(currentUserId)'"
             
@@ -280,10 +280,10 @@ class TasksViewModel: ObservableObject {
                 
                 self.dataStore.find(queryBuilder: taskQueryBuilder) { backendTasks in
                     if let backendTasks = backendTasks as? [BackendTask] {
-                        let tasks = backendTasks.map { $0.toTask() }
-                        DispatchQueue.main.async {
-                            self.tasks = tasks
-                            self.saveTasks()
+                let tasks = backendTasks.map { $0.toTask() }
+                DispatchQueue.main.async {
+                    self.tasks = tasks
+                    self.saveTasks()
                             print("✅ Assigned tasks loaded from server: \(tasks.count)")
                         }
                     }
@@ -344,6 +344,32 @@ class TasksViewModel: ObservableObject {
             print("✅ Successfully created UserTask entry. Task '\(taskId)' assigned to user '\(userId)'.")
         } errorHandler: { fault in
             print("❌ Failed to assign task: \(fault.message ?? "unknown error")")
+        }
+    }
+    
+    func assignTask(task: Task, toUserIds userIds: Set<String>) {
+        guard let taskId = task.objectId else {
+            print("❌ Error: Task ID is missing. Cannot assign task.")
+            return
+        }
+        
+        if userIds.isEmpty {
+            print("No users selected to assign the task.")
+            return
+        }
+        
+        let userTasks = userIds.map { userId -> UserTask in
+            let userTask = UserTask()
+            userTask.status = "new"
+            userTask.taskId = taskId
+            userTask.userId = userId
+            return userTask
+        }
+        
+        Backendless.shared.data.of(UserTask.self).bulkCreate(entities: userTasks) { createdIds in
+            print("✅ Successfully bulk created \(createdIds.count ?? 0) UserTask entries. Task '\(taskId)' assigned to users.")
+        } errorHandler: { fault in
+            print("❌ Failed to bulk assign task: \(fault.message ?? "unknown error")")
         }
     }
 }

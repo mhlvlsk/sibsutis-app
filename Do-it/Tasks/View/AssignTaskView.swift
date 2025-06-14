@@ -5,41 +5,55 @@ struct AssignTaskView: View {
     let task: Task
     @ObservedObject var viewModel: TasksViewModel
     @Environment(\.dismiss) var dismiss
+    
+    @State private var selectedUserIds = Set<String>()
 
     var body: some View {
         NavigationView {
-            VStack {
-                Text("Кому назначить задачу?")
-                    .font(.custom("Flame", size: 20))
-                    .padding()
-                
-                List(viewModel.users, id: \.objectId) { user in
-                    Button(action: {
-                        viewModel.assignTask(task: task, toUser: user)
-                        dismiss()
-                    }) {
-                        HStack {
-                            Image(systemName: "person.circle.fill")
-                                .font(.largeTitle)
-                            VStack(alignment: .leading) {
-                                Text(user.properties["fullname"] as? String ?? "No name")
-                                    .font(.headline)
-                                Text(user.email ?? "No email")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
+            List(viewModel.users, id: \.objectId) { user in
+                Button(action: {
+                    if selectedUserIds.contains(user.objectId ?? "") {
+                        selectedUserIds.remove(user.objectId ?? "")
+                    } else {
+                        selectedUserIds.insert(user.objectId ?? "")
                     }
-                    .buttonStyle(PlainButtonStyle())
+                }) {
+                    HStack {
+                        Image(systemName: selectedUserIds.contains(user.objectId ?? "") ? "checkmark.circle.fill" : "circle")
+                            .font(.largeTitle)
+                            .foregroundColor(selectedUserIds.contains(user.objectId ?? "") ? .blue : .gray)
+                        
+                        VStack(alignment: .leading) {
+                            Text(user.properties["fullname"] as? String ?? "No name")
+                                .font(.headline)
+                            Text(user.email ?? "No email")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                    }
                 }
+                .buttonStyle(PlainButtonStyle())
             }
             .onAppear {
                 viewModel.fetchAllUsers()
             }
-            .navigationBarTitle("Назначить", displayMode: .inline)
-            .navigationBarItems(leading: Button("Отмена") {
-                dismiss()
-            })
+            .navigationTitle("Выберите исполнителей")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Отмена") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Назначить") {
+                        viewModel.assignTask(task: task, toUserIds: selectedUserIds)
+                        dismiss()
+                    }
+                    .disabled(selectedUserIds.isEmpty)
+                }
+            }
         }
     }
 }
