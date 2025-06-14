@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftSDK
 
 struct TasksDetailsPage: View {
     let task: Task
@@ -6,6 +7,11 @@ struct TasksDetailsPage: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var showEditTaskView = false
+    @State private var showAssignTaskView = false
+    
+    private var isManager: Bool {
+        viewModel.isManager
+    }
     
     var body: some View {
         NavigationStack {
@@ -59,6 +65,27 @@ struct TasksDetailsPage: View {
                     Spacer()
                     
                     HStack(spacing: 20) {
+                        if isManager {
+                            Button(action: {
+                                showAssignTaskView = true
+                            }) {
+                                ZStack {
+                                    Text("Назначить")
+                                        .offset(y: 18)
+                                        .font(.custom("Flame", size: 16))
+                                        .frame(width: 120, height: 71)
+                                        .background(Color(UIColor(red: 0.055, green: 0.647, blue: 0.914, alpha: 1)))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                    
+                                    Image(systemName: "person.badge.plus")
+                                        .frame(width: 20, height: 20)
+                                        .foregroundColor(.white)
+                                        .padding(.bottom, 20)
+                                }
+                            }
+                        }
+                        
                         Button(action: {
                             viewModel.toggleTaskCompletion(task: task)
                             dismiss()
@@ -107,6 +134,9 @@ struct TasksDetailsPage: View {
         }
         .sheet(isPresented: $showEditTaskView) {
             AddTaskView(viewModel: viewModel, task: task)
+        }
+        .sheet(isPresented: $showAssignTaskView) {
+            AssignTaskView(task: task, viewModel: viewModel)
         }
     }
 }

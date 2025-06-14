@@ -16,7 +16,7 @@ class HomeViewModel: ObservableObject {
     
     init() {
         tasksChanges()
-        tasksVM.loadTasksFromServer()
+        tasksVM.refreshData()
         tasks = tasksVM.tasks
     }
     
@@ -33,7 +33,7 @@ class HomeViewModel: ObservableObject {
     
     // Метод для обновления задач
     func refreshTasks() {
-        tasksVM.loadTasksFromServer()
+        tasksVM.refreshData()
     }
     
     func getUncompletedTasks() -> [Task] {
