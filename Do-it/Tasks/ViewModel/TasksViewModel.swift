@@ -5,6 +5,19 @@ class TasksViewModel: ObservableObject {
     @Published var tasks: [Task] = []
     @Published var showAddTask: Bool = false
     @Published var users: [BackendlessUser] = []
+    @Published var searchText: String = ""
+    
+    var filteredUsers: [BackendlessUser] {
+        if searchText.isEmpty {
+            return users
+        } else {
+            return users.filter { user in
+                let fullname = user.properties["fullname"] as? String ?? ""
+                let email = user.email ?? ""
+                return fullname.lowercased().contains(searchText.lowercased()) || email.lowercased().contains(searchText.lowercased())
+            }
+        }
+    }
     
     // Новая структура для отображения в UI
     struct AssignedUserInfo: Identifiable {
