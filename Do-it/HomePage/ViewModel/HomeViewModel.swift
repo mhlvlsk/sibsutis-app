@@ -31,7 +31,6 @@ class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    // Метод для обновления задач
     func refreshTasks() {
         tasksVM.refreshData()
     }

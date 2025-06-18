@@ -87,7 +87,7 @@ struct TasksDetailsPage: View {
                                 .listRowBackground(Color.white.opacity(0.1))
                             }
                             .listStyle(PlainListStyle())
-                            .frame(height: 300) // Ограничиваем высоту, чтобы не занимало весь экран
+                            .frame(height: 300)
                             .cornerRadius(10)
                         }
                     }

@@ -30,39 +30,30 @@ class SignUpViewModel: ObservableObject {
             authState = .error("Пароль должен содержать минимум 6 символов.")
             return
         }
-
-        // Шаг 1: Принудительный выход, чтобы очистить любой невалидный кэшированный токен
+        
         Backendless.shared.userService.logout(responseHandler: {
-            // Успешный выход, можно продолжать
             print("Successfully logged out before registration.")
             self.performRegistration()
         }, errorHandler: { fault in
-            // Ошибка при выходе, но мы все равно пытаемся зарегистрироваться,
-            // так как это, вероятно, означает, что сессии и так не было.
             print("Could not log out before registration (this is likely okay): \(fault.message ?? "N/A")")
             self.performRegistration()
         })
     }
     
     private func performRegistration() {
-        // Шаг 2: Установка состояния загрузки
         DispatchQueue.main.async {
             self.authState = .loading
             self.isLoading = true
         }
 
-        // Шаг 3: Создание объекта BackendlessUser
         let user = BackendlessUser()
         user.email = email
         user.password = password
-        user.properties["fullname"] = fullname  // Установка пользовательского свойства
+        user.properties["fullname"] = fullname
 
-        // Шаг 4: Регистрация пользователя с Backendless
         Backendless.shared.userService.registerUser(user: user, responseHandler: { registeredUser in
-            // Регистрация успешна
             print("User registered: \(registeredUser)")
             
-            // Шаг 5: Автоматический вход после регистрации
             Backendless.shared.userService.login(identity: self.email, password: self.password, responseHandler: { loggedInUser in
                 print("User logged in: \(loggedInUser)")
                 DispatchQueue.main.async {
@@ -77,7 +68,6 @@ class SignUpViewModel: ObservableObject {
                 }
             })
         }, errorHandler: { fault in
-            // Обработка ошибок регистрации
             print("Registration failed: \(fault.message ?? "")")
             DispatchQueue.main.async {
                 self.authState = .error("Registration failed: \(fault.message ?? "")")
@@ -86,82 +76,3 @@ class SignUpViewModel: ObservableObject {
         })
     }
 }
-
-//import Foundation
-//import SwiftSDK
-//
-//class SignUpViewModel: ObservableObject {
-//    @Published var fullname: String = ""
-//    @Published var email: String = ""
-//    @Published var password: String = ""
-//    @Published var showAlert: Bool = false
-//    @Published var alertMessage: String = ""
-//    @Published var isSignedUp: Bool = false
-//
-//    func signUp() {
-//        guard ValidationService.isValidName(fullname) else {
-//            alertMessage = "Имя может содержать только буквы."
-//            showAlert = true
-//            return
-//        }
-//        
-//        guard ValidationService.isValidEmail(email) else {
-//            alertMessage = "Неверный адрес электронной почты."
-//            showAlert = true
-//            return
-//        }
-//        
-//        guard ValidationService.isValidPassword(password) else {
-//            alertMessage = "Пароль должен содержать минимум 6 символов."
-//            showAlert = true
-//            return
-//        }
-//        
-//        var users: [User] = []
-//        if let usersData = UserDefaults.standard.data(forKey: "users"),
-//           let decodedUsers = try? JSONDecoder().decode([User].self, from: usersData) {
-//            users = decodedUsers
-//        }
-//        
-//        let user = BackendlessUser()
-//        user.email = email
-//        user.password = password
-//        user.properties["fullname"] = fullname
-//        
-//        Backendless.shared.userService.registerUser(user: user) { registeredUser in
-//            // Регистрация успешна
-//            print("User registered: \(registeredUser)")
-//            
-//            // Шаг 4: Автоматический вход после регистрации
-//            Backendless.shared.userService.login(identity: self.email, password: self.password) { loggedInUser in
-//                print("User logged in: \(loggedInUser)")
-//            } errorHandler: { fault in
-//                print("Login failed: \(fault.message ?? "")")
-//                self.alertMessage = "Login failed after registration"
-//                self.showAlert = true
-//            }
-//        } errorHandler: { fault in
-//            print("Registration failed: \(fault.message ?? "")")
-//            self.alertMessage = fault.message ?? "Registration failed"
-//            self.showAlert = true
-//        }
-//        
-//        if users.contains(where: { $0.email == email }) {
-//            alertMessage = "Пользователь с таким email уже существует."
-//            showAlert = true
-//            return
-//        }
-//        
-//        let newUser = User(email: email, password: password, fullname: fullname)
-//        users.append(newUser)
-//        
-//        if let encodedUsers = try? JSONEncoder().encode(users) {
-//            UserDefaults.standard.set(encodedUsers, forKey: "users")
-//        }
-//        
-//        UserDefaults.standard.set(newUser.email, forKey: "currentUser")
-//        UserDefaults.standard.set(newUser.email, forKey: "lastUserEmail")
-//        UserDefaults.standard.set(newUser.password, forKey: "lastUserPassword")
-//        isSignedUp = true
-//    }
-//}
